@@ -1,14 +1,9 @@
+import ui.RenameRobertUI;
+
 public class RenameRobert {
 
-
     public static void main(String[] args) {
-        /*
-        1.
-
-        //  UI
-
-
-         */
+        var applicationWindow = RenameRobertUI.create();
     }
 
 }
