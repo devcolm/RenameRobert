@@ -40,7 +40,10 @@
               </grid>
             </constraints>
             <properties>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
               <text value=""/>
+              <toolTipText value="Yo! Don't worry, I've got your back with the mundane rename tasks!"/>
             </properties>
           </component>
         </children>
