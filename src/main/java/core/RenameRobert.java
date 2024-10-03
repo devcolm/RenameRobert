@@ -1,3 +1,5 @@
+package core;
+
 import ui.RenameRobertUI;
 
 public class RenameRobert {
@@ -5,8 +7,10 @@ public class RenameRobert {
     public static void main(String[] args) {
         configureSystemOptions();
 
-        var applicationWindow = new RenameRobertUI();
-        applicationWindow.initialise();
+        ApplicationData applicationData = new ApplicationData();
+
+        var applicationWindow = new RenameRobertUI(applicationData);
+        applicationWindow.open();
     }
 
     private static void configureSystemOptions() {

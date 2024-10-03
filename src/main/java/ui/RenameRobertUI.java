@@ -1,23 +1,24 @@
 package ui;
 
+import core.ApplicationData;
 import core.RenameController;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ui.details.MedalReadableDateDetails;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 
-public class RenameRobertUI extends JFrame {
+import static core.ApplicationData.DEFAULT_BROWSE_DIRECTORY;
+
+public class RenameRobertUI extends RenameRobertView {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
-    private static final String TITLE = "Rename Robert";
 
     private JPanel contentPane;
     private JButton renameFilesButton;
@@ -31,21 +32,28 @@ public class RenameRobertUI extends JFrame {
 
     private final RenameController renameController = new RenameController();
 
-    public void initialise() {
-        this.setContentPane(contentPane);
-        this.setTitle(TITLE);
-        this.setResizable(false);
-        this.setSize(420, 500);
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    public RenameRobertUI(ApplicationData applicationData) {
+        super(applicationData);
+    }
 
+    @Override
+    protected void initialise() {
+        setWindowDefaults(contentPane);
+        this.setTitle(ApplicationData.APPLICATION_NAME);
+        this.setSize(420, 500);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    @Override
+    protected void configureAppearance() {
         setFonts();
         setIcons();
+    }
 
+    @Override
+    protected void configureActions() {
         setFileChooser();
-        setButtonListeners();
-
+        addListeners();
     }
 
     private void setFonts() {
@@ -54,13 +62,8 @@ public class RenameRobertUI extends JFrame {
     }
 
     private void setIcons() {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("icons/RenameRobert.jpg");
-
-        BufferedImage image;
-        try {
-            image = ImageIO.read(is);
-        } catch (Exception e) {
-            LOGGER.error("Error loading application image: ", e);
+        BufferedImage image = applicationData.getImage();
+        if (image == null) {
             pictureLabel.setText("Robert is working from home today.");
             return;
         }
@@ -74,19 +77,33 @@ public class RenameRobertUI extends JFrame {
 
     private void setFileChooser() {
         fileChooser.setMultiSelectionEnabled(true);
+        fileChooser.setCurrentDirectory(new File(
+                ObjectUtils.firstNonNull(applicationData.getRecentDirectory(), DEFAULT_BROWSE_DIRECTORY)));
     }
 
-    private void setButtonListeners() {
+    private void addListeners() {
         browseButton.addActionListener(e -> {
             fileChooser.showOpenDialog(browseButton);
             var files = fileChooser.getSelectedFiles();
             renameController.setSelectedFiles(files);
+            applicationData.setRecentDirectory(fileChooser.getCurrentDirectory().getPath());
             LOGGER.info("Selected ({}) files to rename.", files.length);
         });
 
         renameFilesButton.addActionListener(e -> {
+            // todo based on selected algorithm
+            new MedalReadableDateDetails(applicationData).open();
+
             LOGGER.info("Renaming files...");
-            renameController.execute();
+            //renameController.execute();
+        });
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                applicationData.save();
+            }
         });
     }
 
