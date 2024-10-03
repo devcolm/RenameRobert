@@ -16,6 +16,6 @@ public class MedalReadableDateAlgorithmTest {
         MedalReadableDateAlgorithm medalReadableDateAlgorithm = new MedalReadableDateAlgorithm();
         String result = medalReadableDateAlgorithm.rename(input, renameDetails);
 
-        assertEquals("%s 2024-10-01 22:13:09".formatted(newPrefix), result);
+        assertEquals("%s 2024-10-01  22-13-09".formatted(newPrefix), result);
     }
 }

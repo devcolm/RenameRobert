@@ -22,7 +22,7 @@ public class MedalReadableDateAlgorithm implements RenameAlgorithm {
         String minute = dateString.substring(10, 12);
         String second = dateString.substring(12, 14);
 
-        return "%s-%s-%s %s:%s:%s".formatted(year, month, day, hour, minute, second);
+        return "%s-%s-%s  %s-%s-%s".formatted(year, month, day, hour, minute, second);
     }
 
 }

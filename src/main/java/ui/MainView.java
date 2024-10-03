@@ -5,7 +5,7 @@ import core.RenameController;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ui.details.MedalReadableDateDetails;
+import ui.details.MedalReadableDateDetailsView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.io.File;
 
 import static core.ApplicationData.DEFAULT_BROWSE_DIRECTORY;
 
-public class RenameRobertUI extends RenameRobertView {
+public class MainView extends RenameRobertView {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -30,10 +30,9 @@ public class RenameRobertUI extends RenameRobertView {
 
     private final JFileChooser fileChooser = new JFileChooser();
 
-    private final RenameController renameController = new RenameController();
 
-    public RenameRobertUI(ApplicationData applicationData) {
-        super(applicationData);
+    public MainView(ApplicationData applicationData, RenameController renameController) {
+        super(applicationData, renameController);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class RenameRobertUI extends RenameRobertView {
 
         renameFilesButton.addActionListener(e -> {
             // todo based on selected algorithm
-            new MedalReadableDateDetails(applicationData).open();
+            new MedalReadableDateDetailsView(applicationData, renameController).open();
 
             LOGGER.info("Renaming files...");
             //renameController.execute();

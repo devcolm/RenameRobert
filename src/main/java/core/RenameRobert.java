@@ -1,6 +1,6 @@
 package core;
 
-import ui.RenameRobertUI;
+import ui.MainView;
 
 public class RenameRobert {
 
@@ -8,9 +8,10 @@ public class RenameRobert {
         configureSystemOptions();
 
         ApplicationData applicationData = new ApplicationData();
+        RenameController renameController = new RenameController();
 
-        var applicationWindow = new RenameRobertUI(applicationData);
-        applicationWindow.open();
+        var mainView = new MainView(applicationData, renameController);
+        mainView.open();
     }
 
     private static void configureSystemOptions() {

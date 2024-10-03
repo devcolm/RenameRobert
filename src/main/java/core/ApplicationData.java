@@ -24,6 +24,7 @@ public class ApplicationData {
 
     public static final String DEFAULT_BROWSE_DIRECTORY = ".";
     public static final String APPLICATION_NAME = "Rename Robert";
+
     private final BufferedImage image;
 
     private final File settingsFile;
@@ -46,6 +47,14 @@ public class ApplicationData {
         persistSettings(applicationSettings);
     }
 
+    public String getUserDataDirectory() {
+        return System.getProperty("user.home") + File.separator + ".rrobert";
+    }
+
+    public String getTestDirectory() {
+        return getUserDataDirectory() + File.separator + "test";
+    }
+
     private Map<String, Object> loadSettings() {
         Yaml yaml = new IOUtils().getYaml();
 
@@ -54,6 +63,10 @@ public class ApplicationData {
             LOGGER.info("Initialising application settings folder in {}.", appFolder.getAbsolutePath());
             if (!appFolder.mkdirs()) {
                 LOGGER.error("Error creating application settings folder!");
+            }
+            File testFolder = new File(getTestDirectory());
+            if (!testFolder.mkdirs()) {
+                LOGGER.error("Error creating application settings test folder!");
             }
         }
 
@@ -92,8 +105,5 @@ public class ApplicationData {
         }
     }
 
-    private String getUserDataDirectory() {
-        return System.getProperty("user.home") + File.separator + ".rrobert";
-    }
 
 }

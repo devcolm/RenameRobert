@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ui.details.MedalReadableDateDetails">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ui.details.MedalReadableDateDetailsView">
   <grid id="27dc6" binding="contentPane" layout-manager="FormLayout">
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
@@ -41,7 +41,7 @@
           <forms defaultalign-vert="false"/>
         </constraints>
       </vspacer>
-      <component id="3461b" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <component id="3461b" class="javax.swing.JTextField" binding="prefixTextField">
         <constraints>
           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
