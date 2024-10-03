@@ -46,6 +46,7 @@ public class MedalReadableDateDetailsView extends RenameRobertView {
                         "The requested filename is invalid.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
+                return;
             }
             RenameDetails renameDetails = new RenameDetails(prefix);
             var errors = renameController.execute(renameDetails);
@@ -55,6 +56,7 @@ public class MedalReadableDateDetailsView extends RenameRobertView {
                     "Operation completed with (%s) issues.".formatted(errors.getErrors().size()),
                     "Rename Robert",
                     resultIcon);
+            renameController.setSelectedFiles(null); // todo use collection over file array
         });
     }
 
