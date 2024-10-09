@@ -3,9 +3,12 @@ package core;
 import algorithms.RenameAlgorithm;
 import algorithms.RenameAlgorithmFactory;
 import algorithms.RenameDetails;
+import algorithms.RenameResult;
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,27 +21,31 @@ public class RenameController {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final RenameAlgorithmFactory renameAlgorithmFactory;
-    private Collection<File> selectedFiles;
+    @Getter
+    private final Collection<File> selectedFiles;
 
-    public RenameController(RenameAlgorithmFactory renameAlgorithmFactory){
+    public RenameController(RenameAlgorithmFactory renameAlgorithmFactory) {
         this.renameAlgorithmFactory = renameAlgorithmFactory;
+        this.selectedFiles = Lists.newLinkedList();
     }
 
-    public RenameResult execute(RenameDetails renameDetails) {
-        Collection<String> errors = Lists.newLinkedList();
+    public Collection<RenameResult> execute(RenameDetails renameDetails) {
+        Collection<RenameResult> renameResults = Lists.newLinkedList();
         for (File file : selectedFiles) {
             RenameAlgorithm selectedAlgorithm = renameAlgorithmFactory.get(renameDetails.getType());
 
-            String newName = file.getParent() + File.separator + selectedAlgorithm.rename(file.getName(), renameDetails)
+            RenameResult renameResult = selectedAlgorithm.rename(file.getName(), renameDetails);
+            String newName = file.getParent() + File.separator + renameResult.getNewName()
                     + "." + FilenameUtils.getExtension(file.getName());
 
-            if (!file.renameTo(new File(newName))) {
-                String errorMessage = "Error renaming '%s' to '%s'".formatted(file.getName(), newName);
-                errors.add(errorMessage);
+            if (StringUtils.isEmpty(newName) || !file.renameTo(new File(newName))) {
+                String errorMessage = "Error renaming '%s' to '%s'. %s".formatted(file.getName(), newName, renameResult.getErrorMessage());
+                renameResult.setErrorMessage(errorMessage);
+                renameResults.add(renameResult);
                 LOGGER.error(errorMessage);
             }
         }
-        return new RenameResult(errors);
+        return renameResults;
     }
 
 }

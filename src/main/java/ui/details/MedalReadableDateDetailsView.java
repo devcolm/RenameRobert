@@ -4,6 +4,7 @@ import algorithms.RenameAlgorithmType;
 import algorithms.RenameDetails;
 import core.ApplicationData;
 import core.RenameController;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ui.RenameRobertView;
@@ -50,14 +51,15 @@ public class MedalReadableDateDetailsView extends RenameRobertView {
                 return;
             }
             RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, prefix);
-            var errors = renameController.execute(renameDetails);
+            var renameResuts = renameController.execute(renameDetails);
+            long errorCount = renameResuts.stream().filter(result -> !StringUtils.isEmpty(result.getErrorMessage())).count();
 
-            int resultIcon = errors.getErrors().size() == 0 ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE;
+            int resultIcon = errorCount == 0 ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE;
             JOptionPane.showMessageDialog(this,
-                    "Operation completed with (%s) issues.".formatted(errors.getErrors().size()),
+                    "Operation completed with (%s) issues.".formatted(errorCount),
                     "Rename Robert",
                     resultIcon);
-            renameController.setSelectedFiles(null); // todo use collection over file array
+            renameController.getSelectedFiles().clear();
         });
     }
 

@@ -1,16 +1,25 @@
 package algorithms;
 
+import java.util.regex.Pattern;
+
 public class MedalReadableDateAlgorithm implements RenameAlgorithm {
 
-    // TODO: add precaution if the application medal records has digits in its name as we're currently
-    // unsure if medal keeps them for its default file name or not
-    private static final String NON_DIGITS = "\\D";
+    private static final Pattern MEDAL_PATTERN = Pattern.compile("MedalTV[a-zA-z]+\\d{14}");
+    private static final String WORD_CHARACTERS = "[a-zA-z]";
 
     @Override
-    public String rename(String input, RenameDetails renameDetails) {
-        String dateString = input.replaceAll(NON_DIGITS, ""); //  20241001221309
+    public RenameResult rename(String input, RenameDetails renameDetails) {
+        RenameResult renameResult = new RenameResult();
 
-        return "%s %s".formatted(renameDetails.getPrefix(), toReadableFormat(dateString));
+        if (!MEDAL_PATTERN.matcher(input).matches()) {
+            renameResult.setNewName("");
+            renameResult.setErrorMessage("Name '%s' does not match the default Medal naming pattern.");
+            return renameResult;
+        }
+
+        String dateString = input.replaceAll(WORD_CHARACTERS, ""); //  20241001221309
+        renameResult.setNewName("%s %s".formatted(renameDetails.getPrefix(), toReadableFormat(dateString)));
+        return renameResult;
     }
 
     private String toReadableFormat(String dateString) {

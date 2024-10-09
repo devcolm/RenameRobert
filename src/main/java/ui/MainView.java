@@ -88,12 +88,13 @@ public class MainView extends RenameRobertView {
     private void addListeners() {
         browseButton.addActionListener(e -> {
             fileChooser.showOpenDialog(browseButton);
+            
             var files = Arrays.asList(fileChooser.getSelectedFiles());
-            renameController.setSelectedFiles(files);
+            renameController.getSelectedFiles().addAll(files);
             applicationData.setRecentDirectory(fileChooser.getCurrentDirectory().getPath());
-            renameFilesButton.setEnabled(true);
             selectedFilesInfoField.setText("[%s] files selected.".formatted(files.size()));
 
+            renameFilesButton.setEnabled(true);
             LOGGER.info("Selected ({}) files to rename.", files.size());
         });
 
