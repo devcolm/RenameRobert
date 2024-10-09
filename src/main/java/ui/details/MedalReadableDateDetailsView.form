@@ -57,7 +57,7 @@
         </constraints>
         <properties>
           <horizontalAlignment value="0"/>
-          <text value="Character sequence that new names should start with, i.e &quot;Vacation Movie&quot;"/>
+          <text value="What every renamed file will begin with"/>
         </properties>
       </component>
       <component id="8e44" class="javax.swing.JLabel">

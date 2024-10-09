@@ -1,7 +1,9 @@
 package ui;
 
+import algorithms.RenameAlgorithmType;
 import core.ApplicationData;
 import core.RenameController;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Arrays;
 
 import static core.ApplicationData.DEFAULT_BROWSE_DIRECTORY;
 
@@ -27,9 +30,10 @@ public class MainView extends RenameRobertView {
     private JLabel selectFilesLabel;
     private JLabel selectAlgorithmLabel;
     private JList algorithmList;
+    private JLabel selectedFilesInfoField;
 
+    // TODO: Guice DI or mb smth else
     private final JFileChooser fileChooser = new JFileChooser();
-
 
     public MainView(ApplicationData applicationData, RenameController renameController) {
         super(applicationData, renameController);
@@ -41,6 +45,7 @@ public class MainView extends RenameRobertView {
         this.setTitle(ApplicationData.APPLICATION_NAME);
         this.setSize(420, 500);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.algorithmList.setListData(RenameAlgorithmType.values());
     }
 
     @Override
@@ -83,18 +88,20 @@ public class MainView extends RenameRobertView {
     private void addListeners() {
         browseButton.addActionListener(e -> {
             fileChooser.showOpenDialog(browseButton);
-            var files = fileChooser.getSelectedFiles();
+            var files = Arrays.asList(fileChooser.getSelectedFiles());
             renameController.setSelectedFiles(files);
             applicationData.setRecentDirectory(fileChooser.getCurrentDirectory().getPath());
-            LOGGER.info("Selected ({}) files to rename.", files.length);
+            renameFilesButton.setEnabled(true);
+            selectedFilesInfoField.setText("[%s] files selected.".formatted(files.size()));
+
+            LOGGER.info("Selected ({}) files to rename.", files.size());
         });
 
         renameFilesButton.addActionListener(e -> {
-            // todo based on selected algorithm
-            new MedalReadableDateDetailsView(applicationData, renameController).open();
-
-            LOGGER.info("Renaming files...");
-            //renameController.execute();
+            // Opens configuration window for the algorithm selected
+            RenameAlgorithmType selectedType = (RenameAlgorithmType) algorithmList.getSelectedValue();
+            RenameRobertView configurationView = getConfigurationView(selectedType);
+            configurationView.open();
         });
 
         this.addWindowListener(new WindowAdapter() {
@@ -104,6 +111,13 @@ public class MainView extends RenameRobertView {
                 applicationData.save();
             }
         });
+    }
+
+    private RenameRobertView getConfigurationView(RenameAlgorithmType type) {
+        return switch (type) {
+            case MEDAL_READABLE_DATE -> new MedalReadableDateDetailsView(applicationData, renameController);
+            case ENUMERATION -> throw new NotImplementedException("TODO");
+        };
     }
 
 

@@ -1,5 +1,6 @@
 package core;
 
+import algorithms.RenameAlgorithmFactory;
 import ui.MainView;
 
 public class RenameRobert {
@@ -8,7 +9,8 @@ public class RenameRobert {
         configureSystemOptions();
 
         ApplicationData applicationData = new ApplicationData();
-        RenameController renameController = new RenameController();
+        RenameAlgorithmFactory renameAlgorithmFactory = new RenameAlgorithmFactory();
+        RenameController renameController = new RenameController(renameAlgorithmFactory);
 
         var mainView = new MainView(applicationData, renameController);
         mainView.open();

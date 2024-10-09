@@ -1,7 +1,7 @@
 package core;
 
-import algorithms.MedalReadableDateAlgorithm;
 import algorithms.RenameAlgorithm;
+import algorithms.RenameAlgorithmFactory;
 import algorithms.RenameDetails;
 import com.google.common.collect.Lists;
 import lombok.Setter;
@@ -16,15 +16,19 @@ import java.util.Collection;
 public class RenameController {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final RenameAlgorithm DEFAULT_ALGORITHM = new MedalReadableDateAlgorithm();
 
-    private RenameAlgorithm selectedAlgorithm = DEFAULT_ALGORITHM;
+    private final RenameAlgorithmFactory renameAlgorithmFactory;
+    private Collection<File> selectedFiles;
 
-    private File[] selectedFiles;
+    public RenameController(RenameAlgorithmFactory renameAlgorithmFactory){
+        this.renameAlgorithmFactory = renameAlgorithmFactory;
+    }
 
     public RenameResult execute(RenameDetails renameDetails) {
         Collection<String> errors = Lists.newLinkedList();
         for (File file : selectedFiles) {
+            RenameAlgorithm selectedAlgorithm = renameAlgorithmFactory.get(renameDetails.getType());
+
             String newName = file.getParent() + File.separator + selectedAlgorithm.rename(file.getName(), renameDetails)
                     + "." + FilenameUtils.getExtension(file.getName());
 

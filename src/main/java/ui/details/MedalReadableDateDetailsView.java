@@ -1,5 +1,6 @@
 package ui.details;
 
+import algorithms.RenameAlgorithmType;
 import algorithms.RenameDetails;
 import core.ApplicationData;
 import core.RenameController;
@@ -48,7 +49,7 @@ public class MedalReadableDateDetailsView extends RenameRobertView {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            RenameDetails renameDetails = new RenameDetails(prefix);
+            RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, prefix);
             var errors = renameController.execute(renameDetails);
 
             int resultIcon = errors.getErrors().size() == 0 ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE;
