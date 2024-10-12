@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import ui.RenameRobertView;
 
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -59,8 +60,14 @@ public class MedalReadableDateDetailsView extends RenameRobertView {
                     "Operation completed with (%s) issues.".formatted(errorCount),
                     "Rename Robert",
                     resultIcon);
-            renameController.getSelectedFiles().clear();
+            // TODO: list the issues in the window (limit to 5-10 lines)
+            cleanup();
         });
+    }
+
+    private void cleanup() {
+        renameController.getSelectedFiles().clear();
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 
     private boolean isValid(String prefix) {

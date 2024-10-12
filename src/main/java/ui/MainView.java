@@ -85,10 +85,11 @@ public class MainView extends RenameRobertView {
                 ObjectUtils.firstNonNull(applicationData.getRecentDirectory(), DEFAULT_BROWSE_DIRECTORY)));
     }
 
+    // TODO: Updating MainView select files should happen after an event (selected by file chooser, operation completed)
     private void addListeners() {
         browseButton.addActionListener(e -> {
             fileChooser.showOpenDialog(browseButton);
-            
+
             var files = Arrays.asList(fileChooser.getSelectedFiles());
             renameController.getSelectedFiles().addAll(files);
             applicationData.setRecentDirectory(fileChooser.getCurrentDirectory().getPath());

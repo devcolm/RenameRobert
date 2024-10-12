@@ -12,7 +12,7 @@ public class MedalReadableDateAlgorithmTest {
 
     @Test
     public void makesReadable() {
-        String input = "MedalTVCatWars20241001221309";
+        String input = "MedalTVCatWars20241001221309.mkv";
 
         String newPrefix = "Cat Wars";
         RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, newPrefix);
@@ -25,7 +25,7 @@ public class MedalReadableDateAlgorithmTest {
 
     @Test
     public void rejectsIncorrectMedalFileNames() {
-        String input = "MedalTVABECADLO120241001221309";
+        String input = "MedalTVABECADLO120241001221309.mkv";
 
         String emptyName = "";
         RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, emptyName);

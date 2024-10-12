@@ -35,11 +35,10 @@ public class RenameController {
             RenameAlgorithm selectedAlgorithm = renameAlgorithmFactory.get(renameDetails.getType());
 
             RenameResult renameResult = selectedAlgorithm.rename(file.getName(), renameDetails);
-            String newName = file.getParent() + File.separator + renameResult.getNewName()
-                    + "." + FilenameUtils.getExtension(file.getName());
+            String finalName = file.getParent() + File.separator + renameResult.getNewName() + "." + FilenameUtils.getExtension(file.getName());
 
-            if (StringUtils.isEmpty(newName) || !file.renameTo(new File(newName))) {
-                String errorMessage = "Error renaming '%s' to '%s'. %s".formatted(file.getName(), newName, renameResult.getErrorMessage());
+            if (StringUtils.isEmpty(renameResult.getNewName()) || !file.renameTo(new File(finalName))) {
+                String errorMessage = "Error renaming '%s' to '%s'. %s".formatted(file.getName(), finalName, renameResult.getErrorMessage());
                 renameResult.setErrorMessage(errorMessage);
                 renameResults.add(renameResult);
                 LOGGER.error(errorMessage);
