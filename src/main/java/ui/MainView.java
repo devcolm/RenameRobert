@@ -46,6 +46,7 @@ public class MainView extends RenameRobertView {
         this.setSize(420, 500);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.algorithmList.setListData(RenameAlgorithmType.values());
+        this.algorithmList.setSelectedIndex(0);
     }
 
     @Override
