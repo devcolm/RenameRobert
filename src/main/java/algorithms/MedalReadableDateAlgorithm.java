@@ -18,7 +18,7 @@ public class MedalReadableDateAlgorithm implements RenameAlgorithm {
         }
 
         String dateString = input.replaceAll(WORD_CHARACTERS, ""); //  20241001221309
-        renameResult.setNewName("%s %s".formatted(renameDetails.getPrefix(), toReadableFormat(dateString)));
+        renameResult.setNewName("%s %s".formatted(renameDetails.getPrefix(), toReadableFormat(dateString)).trim());
         return renameResult;
     }
 

@@ -28,7 +28,7 @@ public class MedalReadableDateAlgorithmTest {
         String input = "MedalTVABECADLO120241001221309.mkv";
 
         String emptyName = "";
-        RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, emptyName);
+        RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, "any");
 
         MedalReadableDateAlgorithm medalReadableDateAlgorithm = new MedalReadableDateAlgorithm();
         RenameResult result = medalReadableDateAlgorithm.rename(input, renameDetails);
@@ -36,4 +36,18 @@ public class MedalReadableDateAlgorithmTest {
         assertEquals("%s".formatted(emptyName), result.getNewName());
         assertFalse(StringUtils.isEmpty(result.getErrorMessage()));
     }
+
+    @Test
+    public void allowsNoPrefix(){
+        String input = "MedalTVCatWars20241001221309.mkv";
+
+        String emptyName = "";
+        RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, emptyName);
+
+        MedalReadableDateAlgorithm medalReadableDateAlgorithm = new MedalReadableDateAlgorithm();
+        RenameResult result = medalReadableDateAlgorithm.rename(input, renameDetails);
+
+        assertEquals("2024-10-01  22-13-09".formatted(emptyName), result.getNewName());
+    }
+
 }
