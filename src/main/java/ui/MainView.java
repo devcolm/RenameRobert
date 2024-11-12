@@ -32,7 +32,7 @@ public class MainView extends RenameRobertView {
     private JList algorithmList;
     private JLabel selectedFilesInfoField;
 
-    // TODO: Guice DI or mb smth else
+    // TODO: Guice
     private final JFileChooser fileChooser = new JFileChooser();
 
     public MainView(ApplicationData applicationData, RenameController renameController) {
@@ -46,6 +46,7 @@ public class MainView extends RenameRobertView {
         this.setSize(420, 500);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.algorithmList.setListData(RenameAlgorithmType.values());
+        this.algorithmList.setSelectedIndex(0);
     }
 
     @Override
@@ -95,7 +96,8 @@ public class MainView extends RenameRobertView {
             applicationData.setRecentDirectory(fileChooser.getCurrentDirectory().getPath());
             selectedFilesInfoField.setText("[%s] files selected.".formatted(files.size()));
 
-            renameFilesButton.setEnabled(true);
+            boolean renameEnabled = !files.isEmpty();
+            renameFilesButton.setEnabled(renameEnabled);
             LOGGER.info("Selected ({}) files to rename.", files.size());
         });
 
