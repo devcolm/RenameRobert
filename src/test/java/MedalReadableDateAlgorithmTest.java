@@ -25,7 +25,7 @@ public class MedalReadableDateAlgorithmTest {
 
     @Test
     public void rejectsIncorrectMedalFileNames() {
-        String input = "MedalTVABECADLO120241001221309.mkv";
+        String input = "MedalTVABECADLO12024109.mkv";
 
         String emptyName = "";
         RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, "any");
@@ -48,6 +48,19 @@ public class MedalReadableDateAlgorithmTest {
         RenameResult result = medalReadableDateAlgorithm.rename(input, renameDetails);
 
         assertEquals("2024-10-01  22-13-09".formatted(emptyName), result.getNewName());
+    }
+
+    @Test
+    public void skipsDigitsAfterYYYYMMDDHHMMSS(){
+        String input = "MedalTVWorldofWarcraftClassic20260619225517832.mp4";
+
+        String newPrefix = "";
+        RenameDetails renameDetails = new RenameDetails(RenameAlgorithmType.MEDAL_READABLE_DATE, newPrefix);
+
+        MedalReadableDateAlgorithm medalReadableDateAlgorithm = new MedalReadableDateAlgorithm();
+        RenameResult result = medalReadableDateAlgorithm.rename(input, renameDetails);
+
+        assertEquals("2026-06-19  22-55-17".formatted(newPrefix), result.getNewName());
     }
 
 }

@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class MedalReadableDateAlgorithm implements RenameAlgorithm {
 
-    private static final Pattern MEDAL_PATTERN = Pattern.compile("MedalTV[a-zA-z]+\\d{14}.\\w+");
+    private static final Pattern MEDAL_PATTERN = Pattern.compile("MedalTV[a-zA-Z]+\\d{14,}\\.\\w+");
     private static final String WORD_CHARACTERS = "[a-zA-z]";
 
     @Override
